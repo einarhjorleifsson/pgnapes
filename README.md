@@ -1,13 +1,14 @@
 ---
-title: "R and PGNAPES shake hands"
-author: "Einar Hjörleifsson"
-date: "2019-08-16"
 output: 
   html_document: 
     fig_height: 9
     fig_width: 9
     keep_md: yes
 ---
+
+### Shaking hands with PGNAPES
+#### Einar Hjörleifsson
+#### 2019-08-16
 
 
 
