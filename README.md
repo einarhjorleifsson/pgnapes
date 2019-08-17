@@ -1,13 +1,22 @@
+---
+output: 
+  html_document: 
+    fig_height: 9
+    fig_width: 9
+    keep_md: yes
+---
+
 ### Shaking hands with PGNAPES
 #### Einar Hjörleifsson
 #### 2019-08-16
+
+
 
 
 ```r
 library(tidyverse)
 library(pgnapes)
 library(maps)
-library(mapdata)
 ```
 
 **Connect to database**:
@@ -47,35 +56,31 @@ pgn_vessels(con)
 d <-
   pgn_logbook(con) %>%
   filter(year %in% 2013:2018,
-         month %in% 7:8) %>%
-  arrange(cruise, year, month, day, hour, min) %>% 
-  left_join(pgn_catch(con)) %>%
-  collect(n = Inf) %>%
-  mutate(catch = catch / 1000 / (towtime / 60)) %>%
-  filter(species %in% "MAC") %>% 
-  collect(n = Inf)
-st <-
-  d %>% 
-  select(cruise, year, lon, lat) %>% 
-  distinct()
+         month %in% 7:8,
+         sttype %in% c("PTRAWL", "TRAWL", "Multpelt", "PTrawl_Straight",
+                       "DeepTrawl", "Multpelt 832")) %>%
+  arrange(cruise, year, month, day, hour, min) %>%
+  left_join(pgn_catch(con) %>% 
+              filter(species %in% "MAC")) %>%
+  collect(n = Inf) %>% 
+  mutate(catch = catch / 1000 / (towtime / 60),
+         catch = replace_na(catch, 0))
 ```
 
 **Map catch**:
 
 
 ```r
-xlim <- range(st$lon)
-ylim <- range(st$lat)
-m <- map_data("worldHires", xlim = xlim, ylim = ylim)
-
+xlim <- range(d$lon)
+ylim <- range(d$lat)
+m <- map_data("world", xlim = xlim, ylim = ylim)
 d %>% 
   ggplot(aes(lon, lat)) +
   geom_polygon(data = m, aes(long, lat, group = group), fill = "grey") +
-  geom_path(data = st, aes(group = cruise), colour = "grey") +
+  geom_path(aes(group = cruise), colour = "grey") +
   geom_point(aes(size = catch), colour = "red", alpha = 0.5) +
   scale_size_area(max_size = 10) +
-  geom_point(data = st, size = 0.01) +
-  geom_path(data = geo::island) +
+  geom_point(size = 0.01) +
   facet_wrap(~ year, ncol = 2) +
   coord_quickmap(xlim = xlim, ylim = ylim) +
   scale_x_continuous(NULL, NULL) +
