@@ -12,6 +12,15 @@ output:
 
 
 
+The pgnapes as a few set of convenient functions that connect and query the pgnapes-database from within R. That database is an Oracle datbase and the connection used here is via the ROracle package. Installment of the ROracle may not be strait forwards but the following but useful information can be found [here](http://cran.hafro.is/web/packages/ROracle/INSTALL) and information on the installation of Oracle Instant Client [here](https://www.oracle.com/database/technologies/instant-client.html). Once this is in place one can proceed with the following:
+
+**Installing pgnapes**:
+
+```r
+devtools::install_github("hjorleifsson/pgnapes")
+```
+
+**At the start of an R-sesssion load some packages**:
 
 ```r
 library(tidyverse)
