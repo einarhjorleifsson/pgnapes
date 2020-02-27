@@ -1,3 +1,11 @@
+---
+output: 
+  html_document: 
+    fig_height: 12
+    fig_width: 9
+    keep_md: yes
+---
+
 ### Shaking hands with PGNAPES
 #### Einar Hjörleifsson
 #### 2019-08-16
@@ -5,6 +13,9 @@
 
 
 The pgnapes as a few set of convenient functions that connect and query the pgnapes-database from within R. That database is an Oracle datbase and the connection used here is via the ROracle package. Installment of the ROracle may not be straight forward, see details [here](http://cran.hafro.is/web/packages/ROracle/INSTALL). Information on the installation of the needed Oracle Instant Client are [here](https://www.oracle.com/database/technologies/instant-client.html). Once this is in place one can proceed with the following:
+
+This article may also help: [Using dplyr & dbplyr with R language and Oracle Database](https://medium.com/oracledevs/r-and-the-oracle-database-using-dplyr-dbplyr-with-roracle-in-windows-10-8ddcabdd6e97)
+
 
 **Installing pgnapes**:
 
@@ -15,6 +26,7 @@ devtools::install_github("hjorleifsson/pgnapes")
 **At the start of an R-sesssion load some packages**:
 
 ```r
+library(ROracle)
 library(tidyverse)
 library(pgnapes)
 library(maps)
@@ -56,7 +68,7 @@ pgn_vessels(con)
 ```r
 d <-
   pgn_logbook(con) %>%
-  filter(year %in% 2013:2018,
+  filter(year >= 2013,
          month %in% 7:8,
          sttype %in% c("PTRAWL", "TRAWL", "Multpelt", "PTrawl_Straight",
                        "DeepTrawl", "Multpelt 832")) %>%

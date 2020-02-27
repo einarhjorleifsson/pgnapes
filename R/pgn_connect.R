@@ -27,3 +27,24 @@ pgn_connect <- function(username, password) {
 
   return(con)
 }
+
+
+
+pgn_connect_odbc <- function(username, password) {
+
+  drv <- DBI::dbDriver("Oracle")
+  host <- "oracle.hav.fo"
+  port <- 1521
+  xe <- "xe"
+
+  connect.string <- paste(
+    "(DESCRIPTION=",
+    "(ADDRESS=(PROTOCOL=tcp)(HOST=", host, ")(PORT=", port, "))",
+    "(CONNECT_DATA=(SERVICE_NAME=", xe, ")))", sep = "")
+
+  con <- dbConnect(drv, username = "ICE", password = "hjalmar",
+                   dbname = connect.string)
+
+  return(con)
+}
+
