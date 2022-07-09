@@ -1,6 +1,5 @@
 #' @title Connect to PGNAPES
 #'
-#'
 #' @description Establish a connection to PGNAPES
 #'
 #' @param username your username
@@ -42,7 +41,7 @@ pgn_connect_odbc <- function(username, password) {
     "(ADDRESS=(PROTOCOL=tcp)(HOST=", host, ")(PORT=", port, "))",
     "(CONNECT_DATA=(SERVICE_NAME=", xe, ")))", sep = "")
 
-  con <- dbConnect(drv, username = "ICE", password = "hjalmar",
+  con <- dbConnect(drv, username = username, password = password,
                    dbname = connect.string)
 
   return(con)
