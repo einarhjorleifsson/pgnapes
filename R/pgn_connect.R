@@ -21,7 +21,7 @@ pgn_connect <- function(username, password, use_odbc = TRUE) {
                           DBQ = "oracle.hav.fo/xe",
                           Port = 1521,
                           # SVC = "DB_SCHEMA", # schema when connection opens
-                          timeout = 10)
+                          timeout = 20)
     # con <- DBI::dbConnect(odbc::odbc(),
     #                       UID = username,
     #                       PWD = password,
